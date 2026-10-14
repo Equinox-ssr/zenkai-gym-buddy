@@ -10,21 +10,17 @@ function subscribe(cb: () => void) {
   listeners.add(cb);
   return () => listeners.delete(cb);
 }
-function readSetting<T>(key: string, fallback: T): T {
-  if (typeof window === "undefined") return fallback;
-  const v = window.localStorage.getItem(key);
-  return v == null ? fallback : (JSON.parse(v) as T);
-}
 export function writeSetting<T>(key: string, value: T) {
   window.localStorage.setItem(key, JSON.stringify(value));
   listeners.forEach((l) => l());
 }
 function useSetting<T>(key: string, fallback: T): T {
-  return useSyncExternalStore(
+  const raw = useSyncExternalStore(
     subscribe,
-    () => window.localStorage.getItem(key) ?? "",
-    () => "",
-  ) === "" ? fallback : readSetting(key, fallback);
+    () => window.localStorage.getItem(key),
+    () => null,
+  );
+  return raw == null ? fallback : (JSON.parse(raw) as T);
 }
 export const useUnit = () => useSetting<Unit>("zenkai.unit", "kg");
 export const useRestDefault = () => useSetting<number>("zenkai.rest", 90);
