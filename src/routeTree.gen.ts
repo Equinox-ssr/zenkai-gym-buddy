@@ -13,9 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated/progress'
 import { Route as AuthenticatedRoutinesRouteImport } from './routes/_authenticated/routines'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedWorkoutIndexRouteImport } from './routes/_authenticated/workout.index'
+import { Route as AuthenticatedWorkoutIdRouteImport } from './routes/_authenticated/workout.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,6 +38,11 @@ const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedProgressRoute = AuthenticatedProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRoutinesRoute = AuthenticatedRoutinesRouteImport.update({
   id: '/routines',
   path: '/routines',
@@ -52,21 +59,30 @@ const AuthenticatedWorkoutIndexRoute =
     path: '/workout/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedWorkoutIdRoute = AuthenticatedWorkoutIdRouteImport.update({
+  id: '/workout/$id',
+  path: '/workout/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/progress': typeof AuthenticatedProgressRoute
   '/routines': typeof AuthenticatedRoutinesRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/workout/$id': typeof AuthenticatedWorkoutIdRoute
   '/workout/': typeof AuthenticatedWorkoutIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/progress': typeof AuthenticatedProgressRoute
   '/routines': typeof AuthenticatedRoutinesRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/workout/$id': typeof AuthenticatedWorkoutIdRoute
   '/workout': typeof AuthenticatedWorkoutIndexRoute
 }
 export interface FileRoutesById {
@@ -75,23 +91,43 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/progress': typeof AuthenticatedProgressRoute
   '/_authenticated/routines': typeof AuthenticatedRoutinesRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/workout/$id': typeof AuthenticatedWorkoutIdRoute
   '/_authenticated/workout/': typeof AuthenticatedWorkoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/home' | '/routines' | '/settings' | '/workout/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/home'
+    | '/progress'
+    | '/routines'
+    | '/settings'
+    | '/workout/$id'
+    | '/workout/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/home' | '/routines' | '/settings' | '/workout'
+  to:
+    | '/'
+    | '/auth'
+    | '/home'
+    | '/progress'
+    | '/routines'
+    | '/settings'
+    | '/workout/$id'
+    | '/workout'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/home'
+    | '/_authenticated/progress'
     | '/_authenticated/routines'
     | '/_authenticated/settings'
+    | '/_authenticated/workout/$id'
     | '/_authenticated/workout/'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/progress': {
+      id: '/_authenticated/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof AuthenticatedProgressRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/routines': {
       id: '/_authenticated/routines'
       path: '/routines'
@@ -152,20 +195,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorkoutIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/workout/$id': {
+      id: '/_authenticated/workout/$id'
+      path: '/workout/$id'
+      fullPath: '/workout/$id'
+      preLoaderRoute: typeof AuthenticatedWorkoutIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedProgressRoute: typeof AuthenticatedProgressRoute
   AuthenticatedRoutinesRoute: typeof AuthenticatedRoutinesRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedWorkoutIdRoute: typeof AuthenticatedWorkoutIdRoute
   AuthenticatedWorkoutIndexRoute: typeof AuthenticatedWorkoutIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedProgressRoute: AuthenticatedProgressRoute,
   AuthenticatedRoutinesRoute: AuthenticatedRoutinesRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedWorkoutIdRoute: AuthenticatedWorkoutIdRoute,
   AuthenticatedWorkoutIndexRoute: AuthenticatedWorkoutIndexRoute,
 }
 
