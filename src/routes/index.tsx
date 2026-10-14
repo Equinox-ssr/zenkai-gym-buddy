@@ -1,24 +1,38 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Zenkai — Level up every rep" },
+      { name: "description", content: "A minimal gym tracker. Log sets fast, beat your PRs, watch your weekly volume climb." },
+      { property: "og:title", content: "Zenkai — Level up every rep" },
+      { property: "og:description", content: "A minimal gym tracker. Log sets fast, beat your PRs, watch your weekly volume climb." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Landing() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) navigate({ to: "/home", replace: true });
+    });
+  }, [navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-between px-6 py-12">
+      <div className="z-label">Gym tracker</div>
+      <div>
+        <h1 className="text-[5.5rem] text-primary">Zenkai</h1>
+        <p className="mt-3 font-display text-2xl font-bold uppercase tracking-wide">Level up every rep</p>
+        <p className="mt-4 text-muted-foreground">Log sets in seconds. Rest timer built in. PRs and weekly volume, nothing else.</p>
+      </div>
+      <Link to="/auth" className="z-btn-primary w-full">Get started</Link>
+    </main>
   );
 }
