@@ -50,6 +50,7 @@ function RoutinesPage() {
         .from("routine_exercises")
         .insert(editing.exerciseIds.map((exercise_id, position) => ({ routine_id: id!, exercise_id, position })));
       if (error) { toast.error(error.message); return; }
+    }
     setEditing(null);
     qc.invalidateQueries();
     toast.success("Routine saved");
@@ -66,7 +67,9 @@ function RoutinesPage() {
     const ids = [...editing.exerciseIds];
     const j = i + d;
     if (j < 0 || j >= ids.length) return;
-    [ids[i], ids[j]] = [ids[j], ids[i]];
+    const tmp = ids[i]!;
+    ids[i] = ids[j]!;
+    ids[j] = tmp;
     setEditing({ ...editing, exerciseIds: ids });
   }
 
