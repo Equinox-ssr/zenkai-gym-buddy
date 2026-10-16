@@ -76,7 +76,7 @@ function WorkoutPage() {
   async function logSet(exercise_id: string, weightKg: number, reps: number) {
     const prior = [...(history.data ?? []), ...(sets.data ?? [])].filter((s) => s.exercise_id === exercise_id);
     const { error } = await supabase.from("sets").insert({ workout_id: id, exercise_id, weight: weightKg, reps });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     if (prior.length) {
       const bestW = Math.max(...prior.map((s) => s.weight));
       const bestE = Math.max(...prior.map((s) => epley(s.weight, s.reps)));
@@ -145,7 +145,7 @@ function ExerciseCard({
   name: string; unit: Unit; current: SetRow[]; history: HistRow[];
   onLog: (wKg: number, reps: number) => void; onDelete: (id: string) => void;
 }) {
-  const prevWorkoutId = history.length ? history[history.length - 1].workout_id : null;
+  const prevWorkoutId = history.length ? history[history.length - 1]?.workout_id ?? null : null;
   const prev = history.filter((s) => s.workout_id === prevWorkoutId);
   const last = current[current.length - 1] ?? prev[prev.length - 1];
   const [w, setW] = useState("");
@@ -172,7 +172,7 @@ function ExerciseCard({
 
   function submit() {
     const wv = parseFloat(w); const rv = parseInt(r);
-    if (isNaN(wv) || isNaN(rv) || rv <= 0) return toast.error("Enter weight and reps");
+    if (isNaN(wv) || isNaN(rv) || rv <= 0) { toast.error("Enter weight and reps"); return; }
     onLog(fromDisplay(wv, unit), rv);
   }
 
@@ -181,7 +181,7 @@ function ExerciseCard({
       <h2 className="text-2xl">{name}</h2>
       {prev.length > 0 && (
         <div className="mt-1 text-xs text-muted-foreground">
-          Last ({fmtDate(prev[0].date)}): {prev.map((s) => `${toDisplay(s.weight, unit)}×${s.reps}`).join(", ")}
+          Last ({prev[0] ? fmtDate(prev[0].date) : ""}): {prev.map((s) => `${toDisplay(s.weight, unit)}×${s.reps}`).join(", ")}
         </div>
       )}
 
@@ -194,7 +194,7 @@ function ExerciseCard({
                 {toDisplay(s.weight, unit)} <span className="text-sm text-muted-foreground">{unit}</span> × {s.reps}
               </span>
               {prFlags[i] && (
-                <span className="animate-pr inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 font-display text-xs font-extrabold uppercase text-primary-foreground">
+                <span className="animate-pr inline-flex items-center gap-1 rounded-full bg-flash px-2 py-0.5 font-display text-xs font-extrabold uppercase text-flash-foreground">
                   <Trophy className="h-3 w-3" /> New PR!
                 </span>
               )}
@@ -243,12 +243,12 @@ function RestTimer({ end, total, onAdjust, onDone }: { end: number; total: numbe
 
   return (
     <div className="fixed inset-x-0 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-30 px-4">
-      <div className="z-card mx-auto max-w-lg overflow-hidden border-primary/40">
-        <div className="h-1 bg-primary transition-all" style={{ width: `${pct}%` }} />
+      <div className="z-card mx-auto max-w-lg overflow-hidden border-flash/40">
+        <div className="h-1 bg-flash transition-all" style={{ width: `${pct}%` }} />
         <div className="flex items-center justify-between gap-2 p-3">
           <span className="z-label">Rest</span>
           <button onClick={() => onAdjust(-15)} className="z-btn-ghost h-9 px-2 text-sm">−15</button>
-          <span className="font-display text-3xl font-extrabold text-primary tabular-nums">
+          <span className="font-display text-3xl font-extrabold text-flash tabular-nums">
             {Math.floor(left / 60)}:{String(left % 60).padStart(2, "0")}
           </span>
           <button onClick={() => onAdjust(15)} className="z-btn-ghost h-9 px-2 text-sm">+15</button>

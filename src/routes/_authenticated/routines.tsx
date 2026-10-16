@@ -34,22 +34,22 @@ function RoutinesPage() {
   const nameOf = (id: string) => exercises.data?.find((e) => e.id === id)?.name ?? "…";
 
   async function save() {
-    if (!editing || !editing.name.trim()) return toast.error("Name your routine");
+    if (!editing || !editing.name.trim()) { toast.error("Name your routine"); return; }
     let id = editing.id;
     if (id) {
       const { error } = await supabase.from("routines").update({ name: editing.name.trim() }).eq("id", id);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       await supabase.from("routine_exercises").delete().eq("routine_id", id);
     } else {
       const { data, error } = await supabase.from("routines").insert({ name: editing.name.trim() }).select("id").single();
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       id = data.id;
     }
     if (editing.exerciseIds.length) {
       const { error } = await supabase
         .from("routine_exercises")
         .insert(editing.exerciseIds.map((exercise_id, position) => ({ routine_id: id!, exercise_id, position })));
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
     }
     setEditing(null);
     qc.invalidateQueries();
@@ -67,7 +67,9 @@ function RoutinesPage() {
     const ids = [...editing.exerciseIds];
     const j = i + d;
     if (j < 0 || j >= ids.length) return;
-    [ids[i], ids[j]] = [ids[j], ids[i]];
+    const tmp = ids[i]!;
+    ids[i] = ids[j]!;
+    ids[j] = tmp;
     setEditing({ ...editing, exerciseIds: ids });
   }
 

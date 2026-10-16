@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { Play, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/workout/")({
-  validateSearch: (s: Record<string, unknown>): { routine?: string } => ({
-    routine: typeof s.routine === "string" ? s.routine : undefined,
+  validateSearch: (s: Record<string, unknown>): { routine?: string | undefined } => ({
+    routine: typeof s["routine"] === "string" ? s["routine"] : undefined,
   }),
   head: () => ({ meta: [{ title: "Start workout — Zenkai" }, { name: "description", content: "Pick a routine or start an empty workout." }] }),
   component: StartWorkout,
@@ -29,7 +29,7 @@ function StartWorkout() {
 
   async function start(routineId: string | null) {
     const { data, error } = await supabase.from("workouts").insert({ routine_id: routineId }).select("id").single();
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     navigate({ to: "/workout/$id", params: { id: data.id }, replace: true });
   }
 
