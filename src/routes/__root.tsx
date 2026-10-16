@@ -55,7 +55,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#0a0a0a" },
+      { name: "theme-color", content: "#05070D" },
       { title: "Zenkai — Level up every rep" },
       { name: "description", content: "Zenkai is a minimal gym tracker: log sets, track PRs and weekly volume." },
     ],

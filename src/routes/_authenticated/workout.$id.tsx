@@ -194,7 +194,7 @@ function ExerciseCard({
                 {toDisplay(s.weight, unit)} <span className="text-sm text-muted-foreground">{unit}</span> × {s.reps}
               </span>
               {prFlags[i] && (
-                <span className="animate-pr inline-flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 font-display text-xs font-extrabold uppercase text-primary-foreground">
+                <span className="animate-pr inline-flex items-center gap-1 rounded-full bg-flash px-2 py-0.5 font-display text-xs font-extrabold uppercase text-flash-foreground">
                   <Trophy className="h-3 w-3" /> New PR!
                 </span>
               )}
@@ -243,12 +243,12 @@ function RestTimer({ end, total, onAdjust, onDone }: { end: number; total: numbe
 
   return (
     <div className="fixed inset-x-0 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-30 px-4">
-      <div className="z-card mx-auto max-w-lg overflow-hidden border-primary/40">
-        <div className="h-1 bg-primary transition-all" style={{ width: `${pct}%` }} />
+      <div className="z-card mx-auto max-w-lg overflow-hidden border-flash/40">
+        <div className="h-1 bg-flash transition-all" style={{ width: `${pct}%` }} />
         <div className="flex items-center justify-between gap-2 p-3">
           <span className="z-label">Rest</span>
           <button onClick={() => onAdjust(-15)} className="z-btn-ghost h-9 px-2 text-sm">−15</button>
-          <span className="font-display text-3xl font-extrabold text-primary tabular-nums">
+          <span className="font-display text-3xl font-extrabold text-flash tabular-nums">
             {Math.floor(left / 60)}:{String(left % 60).padStart(2, "0")}
           </span>
           <button onClick={() => onAdjust(15)} className="z-btn-ghost h-9 px-2 text-sm">+15</button>
