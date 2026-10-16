@@ -30,31 +30,35 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
+  --color-flash: var(--flash);
+  --color-flash-foreground: var(--flash-foreground);
 }
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.08 0 0);
-  --foreground: oklch(0.97 0 0);
-  --card: oklch(0.14 0 0);
-  --card-foreground: oklch(0.97 0 0);
-  --popover: oklch(0.14 0 0);
-  --popover-foreground: oklch(0.97 0 0);
-  /* #F5C518 gold */
-  --primary: oklch(0.84 0.17 88);
-  --primary-foreground: oklch(0.1 0 0);
-  --secondary: oklch(0.2 0 0);
-  --secondary-foreground: oklch(0.97 0 0);
-  --muted: oklch(0.18 0 0);
-  --muted-foreground: oklch(0.62 0 0);
-  --accent: oklch(0.22 0.03 88);
-  --accent-foreground: oklch(0.84 0.17 88);
-  --destructive: oklch(0.62 0.22 27);
-  --destructive-foreground: oklch(0.97 0 0);
-  --border: oklch(0.24 0 0);
-  --input: oklch(0.26 0 0);
-  --ring: oklch(0.84 0.17 88);
+  --background: #05070D;
+  --foreground: #E6ECFF;
+  --card: #0B1224;
+  --card-foreground: #E6ECFF;
+  --popover: #0B1224;
+  --popover-foreground: #E6ECFF;
+  /* #3B82F6 electric blue */
+  --primary: #3B82F6;
+  --primary-foreground: #05070D;
+  --secondary: #121B33;
+  --secondary-foreground: #E6ECFF;
+  --muted: #121B33;
+  --muted-foreground: #8A97B8;
+  --accent: #14203F;
+  --accent-foreground: #3B82F6;
+  --destructive: #EF4444;
+  --destructive-foreground: #E6ECFF;
+  --border: #1E2A47;
+  --input: #24314F;
+  --ring: #3B82F6;
+  /* #22D3EE cyan highlight (PR badge, rest timer) */
+  --flash: #22D3EE;
+  --flash-foreground: #05070D;
 }
 
 @layer base {
