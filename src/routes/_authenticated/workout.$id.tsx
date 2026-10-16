@@ -76,7 +76,7 @@ function WorkoutPage() {
   async function logSet(exercise_id: string, weightKg: number, reps: number) {
     const prior = [...(history.data ?? []), ...(sets.data ?? [])].filter((s) => s.exercise_id === exercise_id);
     const { error } = await supabase.from("sets").insert({ workout_id: id, exercise_id, weight: weightKg, reps });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     if (prior.length) {
       const bestW = Math.max(...prior.map((s) => s.weight));
       const bestE = Math.max(...prior.map((s) => epley(s.weight, s.reps)));
@@ -145,7 +145,7 @@ function ExerciseCard({
   name: string; unit: Unit; current: SetRow[]; history: HistRow[];
   onLog: (wKg: number, reps: number) => void; onDelete: (id: string) => void;
 }) {
-  const prevWorkoutId = history.length ? history[history.length - 1].workout_id : null;
+  const prevWorkoutId = history.length ? history[history.length - 1]?.workout_id ?? null : null;
   const prev = history.filter((s) => s.workout_id === prevWorkoutId);
   const last = current[current.length - 1] ?? prev[prev.length - 1];
   const [w, setW] = useState("");
@@ -172,7 +172,7 @@ function ExerciseCard({
 
   function submit() {
     const wv = parseFloat(w); const rv = parseInt(r);
-    if (isNaN(wv) || isNaN(rv) || rv <= 0) return toast.error("Enter weight and reps");
+    if (isNaN(wv) || isNaN(rv) || rv <= 0) { toast.error("Enter weight and reps"); return; }
     onLog(fromDisplay(wv, unit), rv);
   }
 
@@ -181,7 +181,7 @@ function ExerciseCard({
       <h2 className="text-2xl">{name}</h2>
       {prev.length > 0 && (
         <div className="mt-1 text-xs text-muted-foreground">
-          Last ({fmtDate(prev[0].date)}): {prev.map((s) => `${toDisplay(s.weight, unit)}×${s.reps}`).join(", ")}
+          Last ({prev[0] ? fmtDate(prev[0].date) : ""}): {prev.map((s) => `${toDisplay(s.weight, unit)}×${s.reps}`).join(", ")}
         </div>
       )}
 

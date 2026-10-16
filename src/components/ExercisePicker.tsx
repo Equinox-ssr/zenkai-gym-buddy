@@ -37,7 +37,7 @@ export function ExercisePicker({
     const name = q.trim();
     if (!name) return;
     const { data: row, error } = await supabase.from("exercises").insert({ name }).select("id").single();
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await qc.invalidateQueries({ queryKey: ["exercises"] });
     pick(row.id);
   }
